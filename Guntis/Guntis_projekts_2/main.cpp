@@ -6,7 +6,7 @@
 
 using namespace std;
 /*
-2. praktiskais darbs "Mantosana"
+3. praktiskais darbs "Virtualas funkcijas"
 Autors   : Guntis Bertins
 Grupa    : P2-4
 Variants : 16 "Celosana"
@@ -81,7 +81,7 @@ travel_count--;
                 // printData
                 void printData();
                 // paymentMethode
-                float payment(float, int);
+               virtual float payment(float, int)=0;
 };
 //Static integer
 int Travel::travel_count = 0;
@@ -177,67 +177,221 @@ cout <<"Celojums Nr. " << this->travel_count << endl <<
                 "Celojuma personu skaits : " << this->getPerson() << endl<<
                 "Datums ,kad izlido : " << this->getDate() << endl;
 }
+class Plane : public Travel {
+protected:
+	float plane_distance;
+	string plane_company;
+
+public:
+	// Non-Overloaded Constructor
+	Plane() {
+		plane_distance = 550;
+		plane_company = "Air Baltic";
+
+	}
+
+	Plane(float distance, string company, string name, float price)
+		: Travel(name, price) {
+		this->Travel_name = name;
+		this->Travel_price = price;
+		this->plane_distance = distance;
+		this->plane_company = company;
+
+	}
+
+	// Plane distance
+	float getPlaneDistance() {
+		return this->plane_distance;
+	}
+
+	void setPlaneDistance(float distance) {
+		this->plane_distance = distance;
+	}
+
+	// Plane company
+	string getPlaneCompany() {
+		return this->plane_company;
+	}
+
+	void setPlaneCompany(string company) {
+		this->plane_company = company;
+	}
+
+	// Credit
+	float credit(float distance ) {
+		return company*4;
+	}
+	// PrintOrder
+	void printOrder();
+	float calcDate(int,float);
+};
+float Plane::calcDate(int distance,){
+	return distance -150;
+}
+
+void Plane::printOrder() {
+	//cout << "Mebele numur." << this->Travel_count << endl;
+	cout << "Mebeles nosaukums :" << this->getTravelName() << endl;
+	cout << "Summa: " << this->Travel_price << " EUR" << endl;
+	cout << "Mebeles izmers " << this->getPlaneCompany() << " CM^2 " << endl;
+	cout << "Mebeles svars: " << this->getPlaneDistance() << " KG " << endl;
+	cout << "Mebeles cena " << this->credit(plane_distance,plane_company)<<endl<<endl;
+	//cout << "Aprekinu plans " << this->calcDate(plane_distance,plane_company)<<endl;
+}
+
 
 int main() {
+    getch();
+    /**< Mainigo defenicija
+                --- INTEGER ---
+    i - FOR cikla iteracija // count - Ievadamo objektu skaits
+    classSelect - Nosaka klases izveli // paramSelect - Nosaka datu ievades tipu
+    people - Utility klases mainigais // empl - Hospital klases mainigais
+                --- FLOAT ---
+    price - Bazes klases mainigais // size - Utility klases mainigais
+                --- STRING ---
+    name , street - Bazes klases mainigie // date - Hospital klases mainigie
+                -----------                                                     */
 
-                int first_payment;
+                int first_payment,i,classSelect,paramSelect,distanc,person;
+                const int count;
                 float price,dur;
-                string name;
+                string name,company;
                 /*
                 [int] first_payment - Variable for function payment
                 [float] Price - Variable for travel_price
                 [string] Name - Variable for travel_name
               dur - Variable for travel_dur
                 */
-                cout << "Ievadiet celojuma nosaukumu : ";
-                cin >> name;
-                cout << "Ievadiet celojuma ilgumu : ";
-                cin >> dur;
-                while (dur <= 0){
-            if(dur<=0){
-                cout << "Ievadiet celojuma ilgumu : ";
-                    cin >> dur;
-                }
-            }
+              Travel *fur[count];
+                Plane *pPlane ;
+            BussTravel *pBuss;
+	// Stat of for-loop ,for object creation
+	for (i = 0; i < count; i++) {
 
-                cout << "Ievadiet celojuma cenu : ";
-                cin >> price;
-                while (price <= 0){
-            if(price<=0){
-                cout << "Ievadiet celojuma cenu : ";
-                    cin >> price;
-                }
-            }
+		cout << endl << i +
+			1 << ". Travel registry : "<<endl<<" 1. Buss Travel "<< endl <<" 2. Plane Travel"<< endl<< "Input : ";
+		do {
+			cin >> type;
+			if (type != 1 && type != 2) {
+				cout << "Input is not correct.";
+			}
+		}
+		while (type != 1 && type != 2);
+
+		cout << endl <<"1. Manual atribute input";cout << "Ievadiet mebeles nosaukumu";
+					cin >> name;
+		cout <<endl << "2. Use default atributes"<<endl;
+		do {
+			cin >> value;
+
+			switch (type) {
+			case 1:
+
+				// Non-overloaded constructor
+				if (value == 2) {
+					fur[i] = new BussTravel;
+
+				}
+				// Pasa parametri
+				else if (value == 1) {
 
 
-                cout << "Ievadiet primo maksajumu summu (vismaz 100 eiro) : ";
-                cin >> first_payment;
-                                while (first_payment < 100){
-            if(first_payment < 100){
-                cout << "Ievadiet pirmas iekasas summu (vismaz 100 eiro) : ";
-                    cin >> first_payment;
-                }
-            }
-    //Statisks objekta ,kurs izmanto Overloaded Constructor
-                Travel travelObjekts;
-                travelObjekts.setTravelName(name);
-                travelObjekts.setTravelDur(dur);
-                travelObjekts.setTravelPrice(price);
-                travelObjekts.printData();
-                // Bazes metode
-                cout << "Atlikusi summa ,ko jamaksa par celojumu : " <<travelObjekts.payment(price,first_payment) << endl;
-                // Constructor to give person and date
 
-                BussTravel *bussObjekts = new BussTravel(3/*dienu skaits*/, "01.12.2011" /*Izlidosanas datums*/
-    ,"Krievija"/*Celojuma nosaukum*/,
-    5/*Personu skaits*/,918.123/*Celojuma izmaksas*/);
-                bussObjekts->printData();
-                // Atvasinata metode
-                cout << "Celojums izmaksas : " << bussObjekts->payment(price,first_payment)<< endl;
-                // Dinamisks objeks ,kurs izmanto Non-Overloaded Constructor.
-                Travel staicObjekts;
-                staicObjekts.printData();
-                                cout << "Celojums izmaksas : " << staicObjekts.payment(price,first_payment)<< endl;
-                delete bussObjekts;
+					cout << "1. Travel" << endl;
+
+					cout << "Ievadiet mebeles nosaukumu: ";
+					cin >> name;
+					cout << "Ievadiet mebeles izveidosanas datumu (dd/mm/yyyy) ";
+					cin >> date;
+
+
+					cout << "Ievadiet mebeles serialo numuru (****-****)";
+					cin >> serial;
+
+					do {
+						cout << "Ievadiet mebles cenu: ";
+						cin >> price;
+						if (price <= 0)
+							cout << "Summai jabut lielakai par 0!\n";
+					}
+					while (price <= 0);
+						do {
+						cout << "Ievadiet mebles cenu: ";
+						cin >> person;
+						if (person <= 0)
+							cout << "Summai jabut lielakai par 0!\n";
+					}
+					while (person <= 0);
+
+						do {
+						cout << "Ievadiet mebles cenu: ";
+						cin >> dur;
+						if (dur <= 0)
+							cout << "Summai jabut lielakai par 0!\n";
+					}
+					while (dur <= 0);
+
+					fur[i] = new BussTravel( person,  date,  name, dur,  price);
+				}
+				break;
+
+			case 2:
+				if (value == 2) {
+					fur[i] = new Plane;
+
+				}
+				else if (value == 1) {
+					cout << "1. Travel" << endl;
+					fur[i] = new Plane;
+					Plane *pPlane = dynamic_cast<Plane*>(fur[i]);
+					do {
+                        cout >> "Ievadiet izmerus" << endl;
+                    cin >> distance;
+						if (distance <= 0)
+							cout << "Izmers nevar but mazaks par nulli";
+					}
+					while (distance <= 0);
+
+					cout << "Ievadiet mebeles nosaukumu";
+					cin >> company;
+					cout << "Ievadiet mebeles nosaukumu";
+					cin >> name;
+
+					do {
+						cout << "Ievadiet ievadiet mebeles cenu : ";
+						cin >> price;
+						if (price <= 0)
+							cout << "Cena nevar but mazaka par nulli";
+					}
+					while (price <= 0);
+
+					fur[i] = new Plane( distance,  company,  name,  price);
+				}
+				break;
+
+			default:
+				cout <<endl<< "Wrong input (1 or 2)"<<endl;
+			}
+
+		}
+		while (value != 1 && value != 2);
+		system("cls");
+	}
+	for(i=0;i<count;i++){
+        BussTravel *pBuss = dynamic_cast<BussTravel*>(fur[i]);
+        if(pBuss){
+            pBuss->combData();
+             pBuss->printOrder();
+
+        }
+        else{
+          Plane *pPlane = dynamic_cast<Plane*>(fur[i]);
+          cout << "Citas mebeles izmaksas :" << pPlane->calcDate(weight,month);
+            pPlane->printOrder();
+
+        }
+
+	}
     return 0;
 }
